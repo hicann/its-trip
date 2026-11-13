@@ -35,9 +35,10 @@ def _read_index() -> list[dict[str, Any]]:
     if not INDEX_FILE.exists():
         return []
     try:
-        return json.loads(INDEX_FILE.read_text(encoding="utf-8"))
+        data = json.loads(INDEX_FILE.read_text(encoding="utf-8"))
     except Exception:
         return []
+    return data if isinstance(data, list) else []
 
 
 def _write_index(items: list[dict[str, Any]]) -> None:
