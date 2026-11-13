@@ -79,6 +79,7 @@ class SiliconFlowClient:
                 resp = requests.post(url, headers=headers, json=payload, timeout=timeout_s)
                 if resp.status_code in (429, 500, 502, 503, 504):
                     # Exponential backoff with jitter.
+                    last_err = RuntimeError(f"HTTP {resp.status_code} from SiliconFlow")
                     sleep_s = (2**attempt) * 0.5 + random.random() * 0.2
                     time.sleep(min(sleep_s, 5.0))
                     continue
